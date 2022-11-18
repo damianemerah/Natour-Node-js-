@@ -31,6 +31,7 @@
     "mapbox-gl": "^2.10.0",
     "mongoose": "^5.13.14",
     "morgan": "^1.10.0",
+    "multer": "^1.4.5-lts.1",
     "nodemailer": "^6.7.7",
     "pug": "^3.0.2",
     "regenerator-runtime": "^0.13.9",
@@ -39,6 +40,7 @@
     "xss-clean": "^0.1.1"
   },
   "devDependencies": {
+    "buffer": "^6.0.3",
     "eslint": "^8.15.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-prettier": "^8.5.0",
@@ -48,7 +50,8 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.29.4",
     "parcel": "^2.7.0",
-    "prettier": "^2.6.2"
+    "prettier": "^2.6.2",
+    "process": "^0.11.10"
   },
   "engines": {
     "node": ">=10.0.0"

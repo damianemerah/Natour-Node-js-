@@ -5,11 +5,11 @@ import 'regenerator-runtime/runtime';
 
 import { displayMap } from './mapbox';
 import { login, logout } from './login';
-// import { updateSettings } from './updateSettings';
+import { updateSettings } from './updateSettings';
 
 // DOM ELEMENTS
 const mapBox = document.getElementById('map');
-const loginForm = document.querySelector('.form');
+const loginForm = document.querySelector('.form--login');
 const logOutBtn = document.querySelector('.nav__el--logout');
 const userDataForm = document.querySelector('.form-user-data');
 const userPasswordForm = document.querySelector('.form-user-password');
