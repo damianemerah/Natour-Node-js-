@@ -34,13 +34,12 @@ const sendErrorDev = (err, req, res) => {
       message: err.message,
       stack: err.stack,
     });
-  } else {
-    //RENDERED WEBSITE
-    return res.status(err.statusCode).render('error', {
-      title: 'Something went wrong!',
-      msg: err.message,
-    });
   }
+  //RENDERED WEBSITE
+  return res.status(err.statusCode).render('error', {
+    title: 'Something went wrong!',
+    msg: err.message,
+  });
 };
 
 const sendErrorProd = (err, req, res) => {
@@ -54,30 +53,28 @@ const sendErrorProd = (err, req, res) => {
       });
 
       //Programming or other unknown error
-    } else {
-      console.error('Error 😑🤬😡😡', err);
-      return res.status(500).json({
-        status: 'error',
-        message: 'Something went wrong',
-      });
     }
-  } else {
-    //B) RENDERED WEBSITE
-    if (err.isOperational) {
-      return res.status(err.statusCode).render('error', {
-        title: 'Something went wrong!',
-        msg: err.message,
-      });
-
-      //Programming or other unknown error
-    } else {
-      console.error('Error 😑🤬😡😡', err);
-      return res.status(err.statusCode).render('error', {
-        title: 'Something went wrong!',
-        msg: 'Please try again later',
-      });
-    }
+    console.error('Error 😑🤬😡😡', err);
+    return res.status(500).json({
+      status: 'error',
+      message: 'Something went wrong',
+      err,
+    });
   }
+  //B) RENDERED WEBSITE
+  if (err.isOperational) {
+    return res.status(err.statusCode).render('error', {
+      title: 'Something went wrong!',
+      msg: err.message,
+    });
+
+    //Programming or other unknown error
+  }
+  console.error('Error 😑🤬😡😡', err);
+  return res.status(err.statusCode).render('error', {
+    title: 'Something went wrong!',
+    msg: 'Please try again later',
+  });
 };
 
 module.exports = (err, req, res, next) => {

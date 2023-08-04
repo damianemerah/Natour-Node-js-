@@ -10,6 +10,7 @@ export const displayMap = (locations) => {
     scrollZoom: false,
     //   center: [-118.113491, 34.111745],
     //   zoom: 4,
+    //   interactive: false,
   });
 
   const bounds = new mapboxgl.LngLatBounds();

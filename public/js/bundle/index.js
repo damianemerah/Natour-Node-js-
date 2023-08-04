@@ -539,6 +539,7 @@ var _esTypedArraySetJs = require("core-js/modules/es.typed-array.set.js");
 var _webImmediateJs = require("core-js/modules/web.immediate.js");
 var _runtime = require("regenerator-runtime/runtime");
 var _mapbox = require("./mapbox");
+var _flw = require("./flw");
 var _login = require("./login");
 var _updateSettings = require("./updateSettings");
 // DOM ELEMENTS
@@ -547,6 +548,7 @@ const loginForm = document.querySelector(".form--login");
 const logOutBtn = document.querySelector(".nav__el--logout");
 const userDataForm = document.querySelector(".form-user-data");
 const userPasswordForm = document.querySelector(".form-user-password");
+const bookBtn = document.getElementById("book-tour");
 // DELEGATION
 if (mapBox) {
     const locations = JSON.parse(mapBox.dataset.locations);
@@ -561,12 +563,12 @@ if (loginForm) loginForm.addEventListener("submit", (e)=>{
 if (logOutBtn) logOutBtn.addEventListener("click", (0, _login.logout));
 if (userDataForm) userDataForm.addEventListener("submit", (e)=>{
     e.preventDefault();
-    const name = document.getElementById("name").value;
-    const email = document.getElementById("email").value;
-    (0, _updateSettings.updateSettings)({
-        name,
-        email
-    }, "data");
+    const form = new FormData();
+    form.append("name", document.getElementById("name").value);
+    form.append("email", document.getElementById("email").value);
+    form.append("photo", document.getElementById("photo").files[0]);
+    for (const [key, value] of form.entries())console.log(key, ":", value);
+    (0, _updateSettings.updateSettings)(form, "data");
 });
 if (userPasswordForm) userPasswordForm.addEventListener("submit", async (e)=>{
     e.preventDefault();
@@ -584,8 +586,13 @@ if (userPasswordForm) userPasswordForm.addEventListener("submit", async (e)=>{
     document.getElementById("password").value = "";
     document.getElementById("password-confirm").value = "";
 });
+if (bookBtn) bookBtn.addEventListener("click", (e)=>{
+    e.target.textContent = "Processing...";
+    const { tourId  } = e.target.dataset;
+    (0, _flw.bookTour)(tourId);
+});
 
-},{"core-js/modules/es.array.reduce.js":"dG9kJ","core-js/modules/es.array.reduce-right.js":"6bX0K","core-js/modules/es.math.hypot.js":"lOmgI","core-js/modules/es.typed-array.set.js":"b0iRR","core-js/modules/web.immediate.js":"3pRoj","regenerator-runtime/runtime":"cDAES","./mapbox":"boTQ2","./login":"aUJqG","./updateSettings":"j7xLx"}],"dG9kJ":[function(require,module,exports) {
+},{"core-js/modules/es.array.reduce.js":"dG9kJ","core-js/modules/es.array.reduce-right.js":"6bX0K","core-js/modules/es.math.hypot.js":"lOmgI","core-js/modules/es.typed-array.set.js":"b0iRR","core-js/modules/web.immediate.js":"3pRoj","regenerator-runtime/runtime":"cDAES","./mapbox":"boTQ2","./login":"aUJqG","./updateSettings":"j7xLx","./flw":"i5oRv"}],"dG9kJ":[function(require,module,exports) {
 "use strict";
 var $ = require("../internals/export");
 var $reduce = require("../internals/array-reduce").left;
@@ -7131,14 +7138,30 @@ const updateSettings = async (data, type)=>{
             url,
             data
         });
-        if (res.data.status === "success") {
-            (0, _alert.showAlert)("success", `${type.toUpperCase()} Updated sucessfully`);
-            window.setTimeout(()=>{
-                location.assign("/me");
-            }, 1500);
-        }
+        if (res.data.status === "success") (0, _alert.showAlert)("success", `${type.toUpperCase()} Updated sucessfully`);
     } catch (err) {
         (0, _alert.showAlert)("error", err.response.data.message);
+    }
+};
+
+},{"axios":"5vw73","./alert":"8F2M5","@parcel/transformer-js/src/esmodule-helpers.js":"fofuL"}],"i5oRv":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "bookTour", ()=>bookTour);
+/* eslint-disable */ var _axios = require("axios");
+var _axiosDefault = parcelHelpers.interopDefault(_axios);
+var _alert = require("./alert");
+const bookTour = async (tourId)=>{
+    // 1) Get checkout session from API
+    try {
+        console.log("Booking Tour");
+        const session = await (0, _axiosDefault.default)(`http://127.0.0.1:8000/api/v1/booking/checkout-session/${tourId}`);
+        console.log(session.data.response.data.authorization_url);
+        window.location.href = session.data.response.data.authorization_url;
+    // 2) Create checkout form + chanre credit card
+    } catch (err) {
+        console.log(err);
+        (0, _alert.showAlert)("error", err);
     }
 };
 
