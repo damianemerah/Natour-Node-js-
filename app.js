@@ -1,5 +1,6 @@
 const path = require('path');
 const express = require('express');
+const compression = require('compression');
 const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
@@ -66,6 +67,8 @@ app.use(mongoSanitize());
 
 // Data sanitization against XSS
 app.use(xss());
+
+app.use(compression());
 
 // Prevent parameter pollution
 app.use(

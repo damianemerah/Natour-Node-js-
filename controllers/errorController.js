@@ -12,7 +12,6 @@ const handlerDuplicateFieldsDB = (err) => {
 };
 
 const handleValidationerrorDB = (err) => {
-  console.log(err);
   const errors = Object.values(err.errors).map((el) => el.message);
 
   const message = `Invalid input data, ${errors.join('. ')}`;
@@ -54,7 +53,7 @@ const sendErrorProd = (err, req, res) => {
 
       //Programming or other unknown error
     }
-    console.error('Error 😑🤬😡😡', err);
+    console.error('Error 😡', err);
     return res.status(500).json({
       status: 'error',
       message: 'Something went wrong',
@@ -70,7 +69,7 @@ const sendErrorProd = (err, req, res) => {
 
     //Programming or other unknown error
   }
-  console.error('Error 😑🤬😡😡', err);
+  console.error('Error 🤬😡', err);
   return res.status(err.statusCode).render('error', {
     title: 'Something went wrong!',
     msg: 'Please try again later',

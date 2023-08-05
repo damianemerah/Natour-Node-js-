@@ -44,7 +44,6 @@ if (userDataForm)
     form.append('photo', document.getElementById('photo').files[0]);
 
     for (const [key, value] of form.entries()) {
-      console.log(key, ':', value);
     }
 
     updateSettings(form, 'data');
