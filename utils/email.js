@@ -2,7 +2,6 @@ const nodemailer = require('nodemailer');
 const nodemailerSendgrid = require('nodemailer-sendgrid');
 const pug = require('pug');
 const htmlToText = require('html-to-text');
-const { __esModule } = require('xss-clean/lib/xss');
 
 module.exports = class Email {
   constructor(user, url) {

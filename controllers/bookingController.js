@@ -15,12 +15,13 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
     email: req.user.email,
     amount: tour.price * 100,
     currency: 'NGN',
-    callback_url: `${req.protocol}://${req.get('host')}/?tour=${
+    callback_url: `p${req.protocol}://${req.get('host')}/?tour=${
       req.params.tourId
     }&user=${req.user._id}&price=${tour.price}`,
 
     metadata: {
-      customElements: [
+      orderID: tour.id,
+      custom_fields: [
         {
           display_name: tour.name,
           variable_name: 'tour',
